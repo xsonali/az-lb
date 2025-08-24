@@ -1,5 +1,10 @@
-# Terraform directories and state
+# Terraform files
 .terraform/
+.terraform.lock.hcl
 *.tfstate
 *.tfstate.backup
-*.tfvars
+crash.log
+override.tf
+override.tf.json
+*_override.tf
+*_override.tf.json
