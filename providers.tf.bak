@@ -1,0 +1,23 @@
+terraform {
+  required_providers {
+    azurerm = {
+      source  = "hashicorp/azurerm"
+      version = "~> 4.0"
+    }
+
+    random = {
+      source  = "hashicorp/random"
+      version = "~>3.6"
+    }
+  }
+}
+
+provider "azurerm" {
+  features {}
+  subscription_id = "09624d5e-dd06-4d7b-9cd9-462e3f5416d0"
+  tenant_id       = "3b4c100c-352a-49f0-89c8-0f9962cc6f2b"
+  client_id       = "df6fefa1-d9b2-4936-8116-9410d3e7603b"
+  client_secret   = "zyl8Q~xm-~ndikIEIKOnA-vaJpTl8vJwe9YswaXm"
+}
+
+provider "random" {}

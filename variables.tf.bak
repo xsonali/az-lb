@@ -54,15 +54,3 @@ variable "virtual_machine_name" {
   type        = string
   default     = "vm-lb-demo"
 }
-
-variable "vm_size" {
-  description = "Size of the virtual machine"
-  type        = string
-  default     = "Standard_B1s" # Or your preferred VM size
-}
-
-variable "disk_name" {
-  description = "Base name for VM disks"
-  type        = string
-  default     = "myDisk"
-}
