@@ -8,3 +8,7 @@ override.tf
 override.tf.json
 *_override.tf
 *_override.tf.json
+
+# OS / editor files
+*.swp
+*.DS_Store
