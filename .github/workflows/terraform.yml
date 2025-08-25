@@ -10,7 +10,6 @@ jobs:
   terraform:
     runs-on: ubuntu-latest
 
-    # Expose Azure credentials securely from GitHub Secrets
     env:
       ARM_CLIENT_ID: ${{ secrets.ARM_CLIENT_ID }}
       ARM_CLIENT_SECRET: ${{ secrets.ARM_CLIENT_SECRET }}
@@ -24,7 +23,7 @@ jobs:
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v3
         with:
-          terraform_version: 4.0   # Terraform version
+          terraform_version: 4.0
 
       - name: Terraform Init
         run: terraform init -input=false
@@ -33,9 +32,11 @@ jobs:
         run: terraform validate
 
       - name: Terraform Plan
-        run: terraform plan -input=false
+        run: terraform plan -input=false \
+              -var "vm_admin_username=${{ secrets.VM_USERNAME }}" \
+              -var "vm_admin_password=${{ secrets.VM_PASSWORD }}"
 
-      # Uncomment if you want automatic apply on push to main
-      # - name: Terraform Apply
-      #   if: github.ref == 'refs/heads/main'
-      #   run: terraform apply -auto-approve -input=false
+      - name: Terraform Apply
+        run: terraform apply -input=false -auto-approve \
+              -var "vm_admin_username=${{ secrets.VM_USERNAME }}" \
+              -var "vm_admin_password=${{ secrets.VM_PASSWORD }}"
