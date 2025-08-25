@@ -10,16 +10,15 @@ variable "resource_group_location" {
 # ========================
 # Virtual Machine
 # ========================
-variable "username" {
-  description = "Admin username for the virtual machines"
+variable "vm_admin_username" {
   type        = string
-  default     = "azureuser"
+  description = "Admin username for the Linux VM"
 }
 
-variable "password" {
-  description = "Admin password for the virtual machines. If empty, a random password will be generated"
+variable "vm_admin_password" {
   type        = string
-  default     = ""
+  description = "Admin password for the Linux VM"
+  sensitive   = true
 }
 
 variable "vm_count" {
