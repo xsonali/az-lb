@@ -6,8 +6,5 @@
     "azure-cli": "latest"
   },
   "postCreateCommand": "terraform --version && az --version",
-  "forwardPorts": [8080],
-  "extensions": [
-    "yzhang.markdown-all-in-one"
-  ]
+  "forwardPorts": [8080]
 }
