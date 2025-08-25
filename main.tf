@@ -170,8 +170,8 @@ resource "azurerm_linux_virtual_machine" "vms_pool" {
   size                  = var.vm_size
   network_interface_ids = [azurerm_network_interface.be_pool_nics[count.index].id]
 
-  admin_username = var.username
-  admin_password = coalesce(var.password, random_password.password_for_vms.result)
+  admin_username = var.vm_admin_username
+  admin_password = coalesce(var.vm_admin_password, random_password.password_for_vms.result)
 
   os_disk {
     caching              = "ReadWrite"
@@ -195,17 +195,15 @@ resource "azurerm_linux_virtual_machine" "vms_pool" {
 
 resource "azurerm_virtual_machine_extension" "nginx_extension" {
   count                = 3
-  name                 = "Nginx"
+  name                 = "nginx-extension-${count.index}"
   virtual_machine_id   = azurerm_linux_virtual_machine.vms_pool[count.index].id
   publisher            = "Microsoft.Azure.Extensions"
   type                 = "CustomScript"
   type_handler_version = "2.0"
 
-  settings = <<SETTINGS
-{
-  "commandToExecute": "sudo apt-get update && sudo apt-get install nginx -y && echo 'Hello World from $(hostname)' > /var/www/html/index.html && sudo systemctl restart nginx"
-}
-SETTINGS
+  settings = jsonencode({
+    commandToExecute = "sudo apt-get update && sudo apt-get install -y nginx && echo 'Hello World from $(hostname)' | sudo tee /var/www/html/index.html && sudo systemctl restart nginx"
+  })
 }
 
 # Create an Internal Load Balancer to distribute traffic to the
