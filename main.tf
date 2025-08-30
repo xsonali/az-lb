@@ -76,9 +76,18 @@ resource "azurerm_subnet_network_security_group_association" "be_subnet_nsg_asso
 # Create Public IPs to route traffic from the Load Balancer
 # to the VMs in the Backend Pool
 
-resource "azurerm_public_ip" "outbound_pip" {
-  count               = 2
-  name                = "outbound-pip-${count.index}"
+# PIP for Bastion
+resource "azurerm_public_ip" "bastion_pip" {
+  name                = "bastion-pip"
+  location            = azurerm_resource_group.az_lb_rg.location
+  resource_group_name = azurerm_resource_group.az_lb_rg.name
+  allocation_method   = "Static"
+  sku                 = "Standard"
+}
+
+# PIP for NAT / VM inbound
+resource "azurerm_public_ip" "nat_pip" {
+  name                = "nat-pip"
   location            = azurerm_resource_group.az_lb_rg.location
   resource_group_name = azurerm_resource_group.az_lb_rg.name
   allocation_method   = "Static"
@@ -98,9 +107,20 @@ resource "azurerm_nat_gateway" "lb_nat" {
 # Associate one of the Public IPs to the NAT Gateway to route
 # traffic from the Virtual Machines to the internet
 
-resource "azurerm_nat_gateway_public_ip_association" "nat_pip_assoc" {
-  nat_gateway_id       = azurerm_nat_gateway.lb_nat.id
-  public_ip_address_id = azurerm_public_ip.outbound_pip[0].id
+resource "azurerm_subnet_nat_gateway_association" "subnet_nat_assoc" {
+  subnet_id      = azurerm_subnet.vm_subnet.id
+  nat_gateway_id = azurerm_nat_gateway.nat_gw.id
+}
+
+resource "azurerm_nat_gateway" "nat_gw" {
+  name                = "nat-gateway"
+  location            = azurerm_resource_group.az_lb_rg.location
+  resource_group_name = azurerm_resource_group.az_lb_rg.name
+  sku_name            = "Standard"
+
+  public_ip_address_ids = [
+    azurerm_public_ip.nat_outbound_pip.id
+  ]
 }
 
 # Create Network Interfaces
@@ -132,8 +152,8 @@ resource "azurerm_bastion_host" "ba_host" {
 
   ip_configuration {
     name                 = "ipconfig"
-    subnet_id            = azurerm_subnet.bastion.id
-    public_ip_address_id = azurerm_public_ip.outbound_pip[1].id
+    subnet_id            = azurerm_subnet.bastionSN.id
+    public_ip_address_id = azurerm_public_ip.bastion_pip.id
   }
 }
 
