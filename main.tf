@@ -25,7 +25,7 @@ resource "azurerm_subnet" "be_subnet" {
 # Create a subnet in the VNet for creating Azure Bastion
 # This subnet is required for Azure Bastion to work properly
 
-resource "azurerm_subnet" "bastion" {
+resource "azurerm_subnet" "bastionSN" {
   name                 = "AzureBastionSubnet"
   resource_group_name  = azurerm_resource_group.az_lb_rg.name
   virtual_network_name = azurerm_virtual_network.lb_vnet.name
