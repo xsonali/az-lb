@@ -94,24 +94,15 @@ resource "azurerm_public_ip" "nat_pip" {
   sku                 = "Standard"
 }
 
-# Create a NAT Gateway for outbound internet access of the
-# VM in the Backend Pool of the Load Balancer
-
-resource "azurerm_nat_gateway" "lb_nat" {
-  name                = "lb-nat"
-  location            = azurerm_resource_group.az_lb_rg.location
-  resource_group_name = azurerm_resource_group.az_lb_rg.name
-  sku_name            = "Standard"
-}
-
-# Associate one of the Public IPs to the NAT Gateway to route
-# traffic from the Virtual Machines to the internet
+# NAT Gateway association
 
 resource "azurerm_subnet_nat_gateway_association" "subnet_nat_assoc" {
   subnet_id      = azurerm_subnet.vm_subnet.id
   nat_gateway_id = azurerm_nat_gateway.nat_gw.id
 }
 
+# Create a NAT Gateway for outbound internet access of the
+# VM in the Backend Pool of the Load Balancer
 resource "azurerm_nat_gateway" "nat_gw" {
   name                = "nat-gateway"
   location            = azurerm_resource_group.az_lb_rg.location
