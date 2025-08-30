@@ -85,18 +85,16 @@ resource "azurerm_public_ip" "bastion_pip" {
 # Public IP for NAT outbound
 resource "azurerm_public_ip" "nat_outbound_pip" {
   name                = "nat-outbound-pip"
->>>>>>> 9dc8b87 (Update main.ft file)
   location            = azurerm_resource_group.az_lb_rg.location
   resource_group_name = azurerm_resource_group.az_lb_rg.name
   allocation_method   = "Static"
   sku                 = "Standard"
-<<<<<<< HEAD
 }
 
 # NAT Gateway association
 
 resource "azurerm_subnet_nat_gateway_association" "subnet_nat_assoc" {
-  subnet_id      = azurerm_subnet.vm_subnet.id
+  subnet_id      = azurerm_subnet.be_subnet.id
   nat_gateway_id = azurerm_nat_gateway.nat_gw.id
 }
 
@@ -270,4 +268,4 @@ resource "azurerm_lb_rule" "lb_inbound_rule" {
 
 
 
-  
+
