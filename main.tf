@@ -85,13 +85,27 @@ resource "azurerm_public_ip" "bastion_pip" {
   sku                 = "Standard"
 }
 
-# PIP for NAT / VM inbound
-resource "azurerm_public_ip" "nat_pip" {
-  name                = "nat-pip"
+# Create a NAT Gateway for outbound internet access of the
+# VM in the Backend Pool of the Load Balancer
+
+resource "azurerm_nat_gateway" "lb_nat" {
+  name                = "lb-nat"
+  location            = azurerm_resource_group.az_lb_rg.location
+  resource_group_name = azurerm_resource_group.az_lb_rg.name
+  sku_name            = "Standard"
+}
+
+# Associate one of the Public IPs to the NAT Gateway to route
+# traffic from the Virtual Machines to the internet
+# Public IP for NAT outbound
+resource "azurerm_public_ip" "nat_outbound_pip" {
+  name                = "nat-outbound-pip"
+>>>>>>> 9dc8b87 (Update main.ft file)
   location            = azurerm_resource_group.az_lb_rg.location
   resource_group_name = azurerm_resource_group.az_lb_rg.name
   allocation_method   = "Static"
   sku                 = "Standard"
+<<<<<<< HEAD
 }
 
 # NAT Gateway association
@@ -103,15 +117,19 @@ resource "azurerm_subnet_nat_gateway_association" "subnet_nat_assoc" {
 
 # Create a NAT Gateway for outbound internet access of the
 # VM in the Backend Pool of the Load Balancer
+
 resource "azurerm_nat_gateway" "nat_gw" {
   name                = "nat-gateway"
   location            = azurerm_resource_group.az_lb_rg.location
   resource_group_name = azurerm_resource_group.az_lb_rg.name
   sku_name            = "Standard"
+  idle_timeout_in_minutes = 4
+}
 
-  public_ip_address_ids = [
-    azurerm_public_ip.nat_outbound_pip.id
-  ]
+# Associate Public IP to NAT Gateway
+resource "azurerm_nat_gateway_public_ip_association" "nat_ip_association" {
+  nat_gateway_id       = azurerm_nat_gateway.nat_gw.id
+  public_ip_address_id = azurerm_public_ip.nat_outbound_pip.id
 }
 
 # Create Network Interfaces
