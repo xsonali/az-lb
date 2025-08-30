@@ -73,9 +73,6 @@ resource "azurerm_subnet_network_security_group_association" "be_subnet_nsg_asso
   network_security_group_id = azurerm_network_security_group.lb_nsg.id
 }
 
-# Create Public IPs to route traffic from the Load Balancer
-# to the VMs in the Backend Pool
-
 # PIP for Bastion
 resource "azurerm_public_ip" "bastion_pip" {
   name                = "bastion-pip"
@@ -85,18 +82,6 @@ resource "azurerm_public_ip" "bastion_pip" {
   sku                 = "Standard"
 }
 
-# Create a NAT Gateway for outbound internet access of the
-# VM in the Backend Pool of the Load Balancer
-
-resource "azurerm_nat_gateway" "lb_nat" {
-  name                = "lb-nat"
-  location            = azurerm_resource_group.az_lb_rg.location
-  resource_group_name = azurerm_resource_group.az_lb_rg.name
-  sku_name            = "Standard"
-}
-
-# Associate one of the Public IPs to the NAT Gateway to route
-# traffic from the Virtual Machines to the internet
 # Public IP for NAT outbound
 resource "azurerm_public_ip" "nat_outbound_pip" {
   name                = "nat-outbound-pip"
@@ -119,10 +104,10 @@ resource "azurerm_subnet_nat_gateway_association" "subnet_nat_assoc" {
 # VM in the Backend Pool of the Load Balancer
 
 resource "azurerm_nat_gateway" "nat_gw" {
-  name                = "nat-gateway"
-  location            = azurerm_resource_group.az_lb_rg.location
-  resource_group_name = azurerm_resource_group.az_lb_rg.name
-  sku_name            = "Standard"
+  name                    = "nat-gateway"
+  location                = azurerm_resource_group.az_lb_rg.location
+  resource_group_name     = azurerm_resource_group.az_lb_rg.name
+  sku_name                = "Standard"
   idle_timeout_in_minutes = 4
 }
 
