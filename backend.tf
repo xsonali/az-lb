@@ -5,5 +5,6 @@ terraform {
 	storage_account_name = "backendstorage747"
 	container_name       = "ptstate"
 	key                  = "tfstate"
+  }
 }
   
