@@ -73,7 +73,7 @@ resource "azurerm_subnet_network_security_group_association" "be_subnet_nsg_asso
   network_security_group_id = azurerm_network_security_group.lb_nsg.id
 }
 
-# Create Public IPs to reute traffic from the Load Balancer
+# Create Public IPs to route traffic from the Load Balancer
 # to the VMs in the Backend Pool
 
 resource "azurerm_public_ip" "outbound_pip" {
