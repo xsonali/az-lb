@@ -26,21 +26,21 @@ Terraform Structure
 ________________________________________
 Key logical name of the resources
 	                         	
-Resource Group		: 		az_lb_rg
-Virtual Network		:		lb_vnet
-Backend Subnet 	:     		be_subnet
-Bastion			:		bastionSN
-NSG			:		lb_nsg
-Public IP NAT		:		nat_outbound_pip
-Bastion PIP		:		bastion_pip
-NAT Gateway		:		lb_nat
-NIC			:		be_pool_nics
-Bastion Host		:		ba_host
-Internal LB		:		internal_lb
+Resource Group			: 		az_lb_rg
+Virtual Network			:		lb_vnet
+Backend Subnet 			:     		be_subnet
+Bastion					:		bastionSN
+NSG						:		lb_nsg
+Public IP NAT			:		nat_outbound_pip
+Bastion PIP				:		bastion_pip
+NAT Gateway				:		lb_nat
+NIC						:		be_pool_nics
+Bastion Host			:		ba_host
+Internal LB				:		internal_lb
 Backend Address Pool	:		be_pool
-Healthe Probe		:		hp
-LB rule			:		lb_inbound_rule
-NAT GW		:		nat_gw		
+Healthe Probe			:		hp
+LB rule					:		lb_inbound_rule
+NAT GW					:		nat_gw		
 		
 		
 		
@@ -48,14 +48,14 @@ NAT GW		:		nat_gw
 		
 ________________________________________
 resource "azurerm_lb_rule" "lb_inbound_rule" {
-  loadbalancer_id                                 = azurerm_lb.internal_lb.id
-  name                                                    = "lb-inbound-rule"
-  protocol                                               = "Tcp"
-  frontend_port                                    = 80
-  backend_port                                     = 80
-  disable_outbound_snat                   = true
-  frontend_ip_configuration_name  = "frontend-ip"
-  probe_id                                             = azurerm_lb_probe.hp.id
+  loadbalancer_id                     = azurerm_lb.internal_lb.id
+  name                                = "lb-inbound-rule"
+  protocol                            = "Tcp"
+  frontend_port                       = 80
+  backend_port                        = 80
+  disable_outbound_snat               = true
+  frontend_ip_configuration_name      = "frontend-ip"
+  probe_id                            = azurerm_lb_probe.hp.id
   backend_address_pool_ids            = [azurerm_lb_backend_address_pool.be_pool.id]
 }
 ________________________________________
