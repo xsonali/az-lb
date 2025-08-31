@@ -7,7 +7,7 @@ Features
 •	Deploys Azure Load Balancer (Standard or Basic SKU)
 •	Configurable frontend IP (Public or Internal)
 •	Backend pool association with virtual machines or NICs
-•	Health probe configuration (TCP, HTTP, HTTPS)
+•	Health probe configuration (HTTP)
 •	Load balancing rules with port mapping
 •	Optional inbound NAT rules
 •	Modular Terraform structure for multi-environment support
