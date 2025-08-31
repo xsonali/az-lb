@@ -65,7 +65,7 @@ Security Considerations
 •	Avoid exposing backend VMs directly to the internet
 •	Use health probes to detect and isolate unhealthy instances
 ________________________________________
-Monitoring & Logging
+Monitoring & Logging (If needed for monitoring)
 •	Enable diagnostics via azurerm_monitor_diagnostic_setting
 •	Track metrics like packet drops, probe status, and throughput
 •	Integrate with Log Analytics or Azure Monitor for insights
